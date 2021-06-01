@@ -102,8 +102,7 @@ def sortdata():
 
 #final clean
 def finalclean():
-        for i in temppath:
-                shutil.rmtree(temppath, ignore_errors=True)
+        shutil.rmtree(temppath, ignore_errors=True)
                 
         
 
