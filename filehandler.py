@@ -22,6 +22,7 @@ fileext = {
 foundgear = []
 
 #tempdatabse for file transfer:
+counterandtransfer = []
 tempdata = []
 
 
@@ -43,19 +44,36 @@ def checker():
                                 for z in files:
                                         for j in allextension:
                                                 if j in z:
-                                                        shutil.copy2(root+'\\'+z, temppath)
-                        cleansds(path)
-                        
-
-
-              
+                                                        counterandtransfer.append(str(root+'\\'+z))
+                                                        #
+                        #cleansds(path)
+                                                        
                 except OSError as e:
                         print(e.strerror)
                         pass
 
+#transfer files
+def transfer():
+        total = len(counterandtransfer)
+        if total >0:
+                lenratio = 50/total
+                print(counterandtransfer)
+                counting = 0
+                for h in counterandtransfer:
+                        counting +=1
+                        counter = total - counting
+                        print(h)
+                        print(counter)
+                        print('|'*int(lenratio*counting) + '.' * (int(lenratio*counter)))
+                        os.system('cls')
+                        shutil.copy2(h, temppath)
+       
+
 #clean SDs
-def cleansds(path):
-        shutil.rmtree(path, ignore_errors=True)
+def cleansds():
+        for i in checkpaths:
+                path = str(i) + directoryindex
+                shutil.rmtree(path, ignore_errors=True)
 
 #create directory based on file name
 def analyzefiles():
@@ -75,13 +93,20 @@ def createfolder(foundgear):
                 if not os.path.exists(dumppath+'\\'+i):
                         os.makedirs(dumppath+'\\'+i)
 
+#sort all data to folders
 def sortdata():
         for i in tempdata:
                 for j in os.listdir(dumppath):
                         if str(i[0]) in (j):
-                                print(temppath+'\\'+i[1])
                                 shutil.copy2(temppath+'\\'+i[1], dumppath + '\\' + j)
-        cleansds(temppath)
+
+#final clean
+def finalclean():
+        for i in temppath:
+                shutil.rmtree(temppath, ignore_errors=True)
+                
+        
+
         
 
         
@@ -92,8 +117,13 @@ if not os.path.exists(temppath):
         os.makedirs(temppath)
 
 checker()
+transfer()
+cleansds()
 analyzefiles()
 sortdata()
+finalclean()
+
+input('End')
 
 
 
