@@ -1,6 +1,7 @@
 import os,sys,string,shutil
 
 
+
 #folder to dump files
 dumppath = 'C:\\Users\\anton\\Desktop\\TempMedia'
 temppath = dumppath+'\\_temp'
@@ -45,7 +46,7 @@ def checker():
                                         for j in allextension:
                                                 if j in z:
                                                         counterandtransfer.append(str(root+'\\'+z))
-                                                        #
+
                         #cleansds(path)
                                                         
                 except OSError as e:
@@ -72,8 +73,11 @@ def transfer():
 #clean SDs
 def cleansds():
         for i in checkpaths:
-                path = str(i) + directoryindex
-                shutil.rmtree(path, ignore_errors=True)
+                try:
+                        path = str(i) + directoryindex
+                        shutil.rmtree(path, ignore_errors=True)
+                except error:
+                        print(error)
 
 #create directory based on file name
 def analyzefiles():
@@ -121,8 +125,10 @@ cleansds()
 analyzefiles()
 sortdata()
 finalclean()
+input('...Premere Enter per chiudere...')
 
-input('End')
+        
+
 
 
 
