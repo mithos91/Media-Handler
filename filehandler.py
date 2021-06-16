@@ -11,7 +11,7 @@ ignorepaths = ['C','D']
 checkpaths = []
 foundpaths = {}
 directoryindex = ':\\'
-directorynames = ['GOPRO','MINI 2','POCKET 2']
+directorynames = ['GOPRO','MINI 2','POCKET 2','NIKON']
 direxclutepanoramas = ['PANORAMA']
 listoffilesondevices = {}
 listoffilesonpc = {}
@@ -146,10 +146,10 @@ def copymedias():
                 counter += 1
                 countbars = counter * ratio
                 os.system('cls')
-                print('')
+                print('...')
                 print('Copying files...' + '\t' + str(counter) +' / '+ str(totalfiles))
-                print(str(file) + '\t' + str(listoffilesondevices[file]['Size']))
-                print(listoffilesondevices[file]['Size'])
+                print(str(file) + '\t' + "File Size: " + str(round(float(listoffilesondevices[file]['Size']) / 1048576,2)) + ' Mb')
+                print('...')
                 print('|' * round(countbars) + '.' *round(((totalfiles-counter)*ratio)) + '\t' + str(round(countbars,1)) + '%' )
                         
 
@@ -192,9 +192,22 @@ scanforfileinpc()
 createdirectories()
 scanformedia(filecounter)
 copymedias()
-formatsds()
 
-input('End - Press key to close')
+askforformat = input("do you want to format all plugged sd cards? y/n: ")
+askforformat = askforformat.upper()
+
+if askforformat == 'Y':
+        formatsds()
+        print('...')
+        print('All units were formatted.')
+        print('...')
+        input('End - Press key to close')
+        
+else:
+        print('...')
+        print('No unit was formatted. Files on sd cards yet')
+        print('...')
+        input('End - Press key to close')
 
 
 #notes
