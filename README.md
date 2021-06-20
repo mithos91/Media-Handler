@@ -1,7 +1,7 @@
 # Media-Handler
 Hi there. I made this simple code that helps into extract and catalog your media files following these simple steps:
 1. connect your HDD or SD or MicroSD or whatever you're using to stock your media files.
-2. use the program and follow the instructiong
+2. use the program and follow the instructions
 3. after the program finishes, you will have a folder in which all files are organized in subfolders: first folder gear type, then second subfolder video / photo / raw then
    if they are panoramas, they will have a folder within the photos or raws folder as well.
    
