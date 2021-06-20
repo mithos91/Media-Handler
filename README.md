@@ -14,8 +14,8 @@ Hi there. I made this simple code that helps into extract and catalog your media
 ## After:
 1. open the file and look for **UPDATE THESE VALUES IF NEEDED**. This section is found at the top of the file.
 2. Look for **dumppath** variable and edit it with your own path (the one you want your files to be copied)
-3. **SUPER IMPORTANT**: Look for **ignorepaths** and remove/add/edit all those drivers you want not to be touched. Example C as maindrive, D as backup drive etc. Those you don't need to do any sort of operation.
-4. Look for **directorynames**: my program works by searching all drivers that are currently connected on your PC, then if the drive's name is found in this list, it will copy the files. So, in order to do that, rename your drives, or update this list in order to be able to find these drive. All uppercase please.
+3. **SUPER IMPORTANT**: Look for **ignorepaths** and remove/add/edit all those drives you want not to be touched. Example C as maindrive, D as backup drive etc. Those you don't need to do any sort of operation.
+4. Look for **directorynames**: my program works by searching all drives that are currently connected on your PC, then if the drive's name is found in this list, it will copy the files. So, in order to do that, rename your drives, or update this list in order to be able to find these drive. All uppercase please.
 
 ## Bonus:
 if you want to personalize this program to suit you better then:  
