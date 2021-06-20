@@ -14,16 +14,13 @@ Hi there. I made this simple code that helps into extract and catalog your media
 ## After:
 1. open the file and look for **UPDATE THESE VALUES IF NEEDED**. This section is found at the top of the file.
 2. Look for **dumppath** variable and edit it with your own path (the one you want your files to be copied)
-3. **SUPER IMPORTANT**: Look for **ignorepaths** and remove/add/edit all those drivers you want not to be touched. Example C as maindrive, D as backup drive etc. 
-   Those you don't need to do any sort of operation
-4. Look for **directorynames**: my program works by searching all drivers that are currently connected on your PC, then if the drive's name is found in this list, it will copy the
-   files. So, in order to do that, rename your drives, or update this list in order to be able to find these drive. All uppercase please.
+3. **SUPER IMPORTANT**: Look for **ignorepaths** and remove/add/edit all those drivers you want not to be touched. Example C as maindrive, D as backup drive etc. Those you don't need to do any sort of operation.
+4. Look for **directorynames**: my program works by searching all drivers that are currently connected on your PC, then if the drive's name is found in this list, it will copy the files. So, in order to do that, rename your drives, or update this list in order to be able to find these drive. All uppercase please.
 
 ## Bonus:
 if you want to personalize this program to suit you better then:
-5. **direxclutepanoramas** : this is a list where I grouped all the common names usually used as Panoramas. DJI usually names these folder PANORAMA, so feel free to add/edit/remove
-   in order to suit you better
-6. **allextension** : this is a list of all extension I'm interessed for. So if your device is able to produce different formats, just add/edit/remove this list
+5. **direxclutepanoramas** : this is a list where I grouped all the common names usually used as Panoramas. DJI usually names these folder PANORAMA, so feel free add/edit/remove in order to suit you better.
+6. **allextension** : this is a list of all extension I'm interessed for. So if your device is able to produce different formats, just add/edit/remove this list.
 7. **foldergroup**  : this is a dictionary. For those not very used to pythons code, is more complex version of list. The one thing you should be interessed for is that every 
    subfolder is generated because there is an instruction in this dictionary. 
    Broken down to simplify this to you, it will create a folder VIDEO and it will copy all the MP4 files in it. As well for photos and etc. So don't edit if you're not very
