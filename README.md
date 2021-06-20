@@ -23,7 +23,7 @@ if you want to personalize this program to suit you better then:
 6. **allextension** : this is a list of all extension I'm interessed for. So if your device is able to produce different formats, just add/edit/remove this list.  
 7. **foldergroup**  : this is a dictionary. For those not very used to pythons code, is more complex version of list. The one thing you should be interessed for is that every 
    subfolder is generated because there is an instruction in this dictionary.   
-   Broken down to simplify this to you, it will create a folder VIDEO and it will copy all the MP4 files in it. As well for photos and etc. So don't edit if you're not very
+   Breaking down to simplify this to you, it will create a folder VIDEO and it will copy all the MP4 files in it. As well for photos and etc. So don't edit if you're not very
    sure of what you're doing. But, feel free to edit it and re-arrange as you wish.
    
 My site [numerable.it](www.numerable.it)
