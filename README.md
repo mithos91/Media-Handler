@@ -5,7 +5,7 @@ Hi there. I made this simple code that helps into extract and catalog your media
 3. after the program finishes, you will have a folder in which all files are organized in subfolders: first folder gear type, then second subfolder video / photo / raw then
    if they are panoramas, they will have a folder within the photos or raws folder as well.
    
-#In order to do that PAY ATTENTION TO THE FOLLOWING STEPS   
+# In order to do that PAY ATTENTION TO THE FOLLOWING STEPS   
 
 Before:
 You should have python installed, but if you're here I'm expecting you already have. So move on.
