@@ -1,18 +1,22 @@
-import os,sys,string,shutil,win32api
+import os,sys,string,shutil,win32api,datetime
 
+#UPDATE THESE VALUES IF NEEDED
 ##### Directory paste + handling
 dumppath = 'C:\\Users\\anton\\Desktop\\TempMedia'
+dumppathcompl = dumppath + '\\' + datetime.datetime.now().strftime("%d-%m-%Y")
+ignorepaths = ['C','D']
+directorynames = ['GOPRO','MINI 2','POCKET 2','NIKON','HERO8']
+direxclutepanoramas = ['PANORAMA']
 
 
 
+#DO NOT MODIFY ANYTHING AFTER THIS POINT OR COULD LEAD TO POTENTIAL LOSSES
 ##### all directory variables
 allpaths = list(string.ascii_uppercase) 
-ignorepaths = ['C','D']
+
 checkpaths = []
 foundpaths = {}
 directoryindex = ':\\'
-directorynames = ['GOPRO','MINI 2','POCKET 2','NIKON']
-direxclutepanoramas = ['PANORAMA']
 listoffilesondevices = {}
 listoffilesonpc = {}
 
@@ -59,6 +63,9 @@ def createdirectories():
         #create main directory for dump files
         if not os.path.exists(dumppath):
                 os.makedirs(dumppath)
+        #create submain directory by date
+        if not os.path.exists(dumppathcompl):
+                os.makedirs(dumppathcompl)                
         #check which driver is plugged then create related folder
         for i in allpaths:
                 path = i + ":\\\\"
@@ -67,16 +74,15 @@ def createdirectories():
                         devicename = devicename.upper()
                         for j in directorynames:
                                 if j in devicename:
-                                        newpathfolder = dumppath + '\\' + j
+                                        newpathfolder = dumppathcompl + '\\' + j
                                         foundpaths[path] = {
                                                 'PathPC'        :       newpathfolder,
                                                 'Device'        :       j
                                                 }
                                         if not os.path.exists(newpathfolder):
-                                                os.makedirs(newpathfolder)                                        
+                                                os.makedirs(newpathfolder)
                 except:
                         pass
-
     
 ############### SCAN FOR FILES AND REGISTER INTO A LIST
 def scanformedia(filecounter):
@@ -140,36 +146,40 @@ def createfolderbyfile(foundpath,tempextension):
                                 
 def copymedias():
         totalfiles = len(listoffilesondevices.keys())
-        ratio = 100 / totalfiles
-        counter = 0
-        for file in listoffilesondevices:
-                counter += 1
-                countbars = counter * ratio
-                os.system('cls')
-                print('...')
-                print('Copying files...' + '\t' + str(counter) +' / '+ str(totalfiles))
-                print(str(file) + '\t' + "File Size: " + str(round(float(listoffilesondevices[file]['Size']) / 1048576,2)) + ' Mb')
-                print('...')
-                print('|' * round(countbars) + '.' *round(((totalfiles-counter)*ratio)) + '\t' + str(round(countbars,1)) + '%' )
-                        
+        if totalfiles > 0:
+                ratio = 100 / totalfiles
+                counter = 0
+                for file in listoffilesondevices:
+                        counter += 1
+                        countbars = counter * ratio
+                        os.system('cls')
+                        print('...')
+                        print('Copying files...' + '\t' + str(counter) +' / '+ str(totalfiles))
+                        print(str(file) + '\t' + "File Size: " + str(round(float(listoffilesondevices[file]['Size']) / 1048576,2)) + ' Mb')
+                        print('...')
+                        print('|' * round(countbars) + '.' *round(((totalfiles-counter)*ratio)) + '\t' + str(round(countbars,1)) + '%' )
+                                
 
-                for foldtype in foldergroup:
-                        for ext in foldergroup[foldtype]['Ext']:
-                                #remove damaged files or trash
-                                if listoffilesondevices[file]['Size'] >= 10000:
-                                        origin = listoffilesondevices[file]['Path']
-                                        destination = os.path.join(dumppath,listoffilesondevices[file]['Device'],foldtype)
-                                        #check by type and if panorama false then copy in proper folder
-                                        if listoffilesondevices[file]['Type'] == ext and listoffilesondevices[file]['Panorama'] is False:                                                                                                
-                                                shutil.copy2(origin,destination)
-                                                
-                                        #if not check by type and if panorama true create subfolder for panoramas photos
-                                        elif listoffilesondevices[file]['Type'] == ext and listoffilesondevices[file]['Panorama'] is True:
-                                                panosplit = str(listoffilesondevices[file]['Path']).split('\\')                                                
-                                                panodestination = os.path.join(destination,'PANORAMA',panosplit[len(panosplit)-2])
-                                                if not os.path.exists(panodestination):
-                                                        os.makedirs(panodestination)
-                                                shutil.copy2(origin,panodestination)
+                        for foldtype in foldergroup:
+                                for ext in foldergroup[foldtype]['Ext']:
+                                        #remove damaged files or trash
+                                        if listoffilesondevices[file]['Size'] >= 10000:
+                                                origin = listoffilesondevices[file]['Path']
+                                                destination = os.path.join(dumppathcompl,listoffilesondevices[file]['Device'],foldtype)
+                                                #check by type and if panorama false then copy in proper folder
+                                                if listoffilesondevices[file]['Type'] == ext and listoffilesondevices[file]['Panorama'] is False:                                                                                                
+                                                        shutil.copy2(origin,destination)
+                                                        
+                                                #if not check by type and if panorama true create subfolder for panoramas photos
+                                                elif listoffilesondevices[file]['Type'] == ext and listoffilesondevices[file]['Panorama'] is True:
+                                                        panosplit = str(listoffilesondevices[file]['Path']).split('\\')                                                
+                                                        panodestination = os.path.join(destination,'PANORAMA',panosplit[len(panosplit)-2])
+                                                        if not os.path.exists(panodestination):
+                                                                os.makedirs(panodestination)
+                                                        shutil.copy2(origin,panodestination)
+        else:
+                input("no files, process stopped. Press any key to stop \n")
+                sys.exit()
                                                 
                                         
 def formatsds():
@@ -178,9 +188,40 @@ def formatsds():
                 shutil.rmtree(path, ignore_errors=True)
         
 
-                                        
-        
-        
+
+
+#Loops for input asking                                        
+def askcopyloop():
+        askcopy = input('do you want to proceed and copy all files on Desktop? y/n \n')
+        askcopy = askcopy.upper()
+        if askcopy == 'Y':
+                scanforfileinpc()
+                createdirectories()
+                scanformedia(filecounter)
+                copymedias()
+        elif askcopy == 'N':
+                sys.exit()
+        else:
+                print('wrong command given. Please answer Y or N')
+                askcopyloop()
+
+def askforformatloop():
+        askforformat = input("do you want to format all plugged sd cards? y/n: ")
+        askforformat = askforformat.upper()
+        if askforformat == 'Y':
+                formatsds()
+                print('...')
+                print('All units were formatted.')
+                print('...')
+                input('End - Press key to close')
+        elif askforformat == 'N':
+                print('...')
+                print('No unit was formatted. Files on sd cards yet')
+                print('...')
+                input('End - Press key to close')
+        else:
+                print('wrong command given. Please answer Y or N')
+                askforformatloop()        
 
         
         
@@ -188,26 +229,13 @@ def formatsds():
 
 
 ##### EXECUTE ORDERs
-scanforfileinpc()
-createdirectories()
-scanformedia(filecounter)
-copymedias()
+                
+askcopyloop()
+askforformatloop()
 
-askforformat = input("do you want to format all plugged sd cards? y/n: ")
-askforformat = askforformat.upper()
 
-if askforformat == 'Y':
-        formatsds()
-        print('...')
-        print('All units were formatted.')
-        print('...')
-        input('End - Press key to close')
-        
-else:
-        print('...')
-        print('No unit was formatted. Files on sd cards yet')
-        print('...')
-        input('End - Press key to close')
+
+
 
 
 #notes
