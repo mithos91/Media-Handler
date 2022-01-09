@@ -7,7 +7,7 @@ dumppathcompl = dumppath + '\\' + datetime.datetime.now().strftime("%d-%m-%Y")
 ignorepaths = ['C','D']
 directorynames = ['GOPRO','MINI 2','POCKET 2','NIKON','HERO8']
 direxclutepanoramas = ['PANORAMA']
-
+yesorno = ['Y','N']
 
 
 #DO NOT MODIFY ANYTHING AFTER THIS POINT OR COULD LEAD TO POTENTIAL LOSSES
@@ -178,8 +178,18 @@ def copymedias():
                                                                 os.makedirs(panodestination)
                                                         shutil.copy2(origin,panodestination)
         else:
-                input("no files, process stopped. Press any key to stop \n")
-                sys.exit()
+                answertorestart = ''
+                while answertorestart not in yesorno:
+                        answertorestart = input("no files, process stopped. Try again? y/n \n")
+                        answertorestart = answertorestart.upper()
+                        if answertorestart == 'Y':
+                                askcopyloop()
+                        elif answertorestart =='N':
+                                sys.exit()
+                        else:
+                                print('wrong command given. Please answer Y or N')
+
+                
                                                 
                                         
 def formatsds():
@@ -192,7 +202,7 @@ def formatsds():
 
 #Loops for input asking                                        
 def askcopyloop():
-        askcopy = input('do you want to proceed and copy all files on Desktop? y/n \n')
+        askcopy = input('Check for files and then proceed to copy on Desktop? y/n \n')
         askcopy = askcopy.upper()
         if askcopy == 'Y':
                 scanforfileinpc()
@@ -206,7 +216,7 @@ def askcopyloop():
                 askcopyloop()
 
 def askforformatloop():
-        askforformat = input("do you want to format all plugged sd cards? y/n: ")
+        askforformat = input("do you want to format all plugged sd cards? y/n \n ")
         askforformat = askforformat.upper()
         if askforformat == 'Y':
                 formatsds()
@@ -224,16 +234,26 @@ def askforformatloop():
                 askforformatloop()        
 
         
-        
 
 
 
 ##### EXECUTE ORDERs
+
+looping = False
+while looping == False:
+        askcopyloop()
+        askforformatloop()
+        answeringlooping = ''
+        while answeringlooping not in yesorno:
+                answeringlooping = input('Restart programm? y/n \n')
+                answeringlooping = answeringlooping.upper()
+                if answeringlooping == 'Y':
+                        looping = False
+                elif answeringlooping == 'N':
+                        looping = True
+                else:
+                        print('Please insert the correct valuer Y or N')
                 
-askcopyloop()
-askforformatloop()
-
-
 
 
 
