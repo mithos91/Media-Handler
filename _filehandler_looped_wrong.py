@@ -1,4 +1,5 @@
 import os,sys,string,shutil,win32api,datetime
+
 #UPDATE THESE VALUES IF NEEDED
 ##### Directory paste + handling
 dumppath = 'C:\\Users\\anton\\Desktop\\TempMedia'
@@ -6,14 +7,19 @@ dumppathcompl = dumppath + '\\' + datetime.datetime.now().strftime("%d-%m-%Y")
 ignorepaths = ['C','D']
 directorynames = ['GOPRO','MINI 2','POCKET 2','NIKON','HERO8']
 direxclutepanoramas = ['PANORAMA']
+yesorno = ['Y','N']
+
+
 #DO NOT MODIFY ANYTHING AFTER THIS POINT OR COULD LEAD TO POTENTIAL LOSSES
 ##### all directory variables
 allpaths = list(string.ascii_uppercase) 
+
 checkpaths = []
 foundpaths = {}
 directoryindex = ':\\'
 listoffilesondevices = {}
 listoffilesonpc = {}
+
 ##### data handling variables:
 allextension = ['MP4','JPG','JPEG','DNG','GPR','NEF']
 foldergroup = {
@@ -32,10 +38,15 @@ foldergroup = {
         }
 filecounter = 0
 
+
+
+#remove ignorepaths from allpaths
 for i in ignorepaths:
         for j in allpaths:
                 if j == i:
                         allpaths.remove(j)
+
+
 ############### SCAN FOR FILES ON PC AND REGISTER INTO A LIST
 def scanforfileinpc():
         for root,dirs,files in os.walk(dumppath,topdown=True):
@@ -46,6 +57,7 @@ def scanforfileinpc():
                                 'Path' : filepath,
                                 'Size' : filedim
                                 }
+
 ############### SCAN DEVICES, CREATE DIRECTORIES AND SUBDIRECTORIES
 def createdirectories():
         #create main directory for dump files
@@ -116,16 +128,22 @@ def scanformedia(filecounter):
                                                                 'Type'          :       exti,
                                                                 'Device'        :       foundpaths[j]['Device']
                                                                 }                                        
+
                                 filecounter +=1
                 createfolderbyfile(foundpaths[j]['PathPC'],tempextension)
         print(filecounter)
+
         
+
 def createfolderbyfile(foundpath,tempextension):
         for i in tempextension.keys():
                 if tempextension[i]['controller'] is True:
                         foldername = os.path.join(foundpath,i)
                         if not os.path.exists(foldername):
                                 os.makedirs(foldername)
+        
+
+                                
 def copymedias():
         totalfiles = len(listoffilesondevices.keys())
         if totalfiles > 0:
@@ -141,6 +159,7 @@ def copymedias():
                         print('...')
                         print('|' * round(countbars) + '.' *round(((totalfiles-counter)*ratio)) + '\t' + str(round(countbars,1)) + '%' )
                                 
+
                         for foldtype in foldergroup:
                                 for ext in foldergroup[foldtype]['Ext']:
                                         #remove damaged files or trash
@@ -159,8 +178,18 @@ def copymedias():
                                                                 os.makedirs(panodestination)
                                                         shutil.copy2(origin,panodestination)
         else:
-                input("no files, process stopped. Press any key to stop \n")
-                sys.exit()
+                answertorestart = ''
+                while answertorestart not in yesorno:
+                        answertorestart = input("no files, process stopped. Try again? y/n \n")
+                        answertorestart = answertorestart.upper()
+                        if answertorestart == 'Y':
+                                askcopyloop()
+                        elif answertorestart =='N':
+                                sys.exit()
+                        else:
+                                print('wrong command given. Please answer Y or N')
+
+                
                                                 
                                         
 def formatsds():
@@ -168,9 +197,12 @@ def formatsds():
                 print('formattazione ' + path + ' in corso...')
                 shutil.rmtree(path, ignore_errors=True)
         
+
+
+
 #Loops for input asking                                        
 def askcopyloop():
-        askcopy = input('do you want to proceed and copy all files on Desktop? y/n \n')
+        askcopy = input('Check for files and then proceed to copy on Desktop? y/n \n')
         askcopy = askcopy.upper()
         if askcopy == 'Y':
                 scanforfileinpc()
@@ -182,26 +214,55 @@ def askcopyloop():
         else:
                 print('wrong command given. Please answer Y or N')
                 askcopyloop()
+
 def askforformatloop():
-        askforformat = input("do you want to format all plugged sd cards? y/n: ")
+        askforformat = input("do you want to format all plugged sd cards? y/n \n ")
         askforformat = askforformat.upper()
         if askforformat == 'Y':
                 formatsds()
                 print('...')
                 print('All units were formatted.')
                 print('...')
-                input('End - Press key to close')
         elif askforformat == 'N':
                 print('...')
                 print('No unit was formatted. Files on sd cards yet')
                 print('...')
-                input('End - Press key to close')
         else:
                 print('wrong command given. Please answer Y or N')
                 askforformatloop()        
+
         
-        
+
+
+
 ##### EXECUTE ORDERs
+
+looping = False
+while looping == False:
+        askcopyloop()
+        askforformatloop()
+        answeringlooping = ''
+        while answeringlooping not in yesorno:
+                answeringlooping = input('Restart programm? y/n \n')
+                answeringlooping = answeringlooping.upper()
+                if answeringlooping == 'Y':
+                        looping = False
+                elif answeringlooping == 'N':
+                        looping = True
+                else:
+                        print('Please insert the correct valuer Y or N')
                 
-askcopyloop()
-askforformatloop()
+
+
+
+
+#notes
+        #loopa tutti i valori nella lista listoffiles, loopa tutti i valori in exclude, e se y e' in x, copia x#
+        #avoidfile = [x for x in listoffiles for y in direxclutepanoramas if y in x]
+        #filetocopy = [x for x in listoffiles for y in avoidfile if y not in x]
+
+        #for i in foundpaths.keys():
+         #       print(i)
+          #      for j in filetocopy:                        
+           #             if i in j:
+            #                    pass
